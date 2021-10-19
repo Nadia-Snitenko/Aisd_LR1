@@ -1,12 +1,10 @@
 #include <iostream>
 #include "Image.h"
-#include <time.h>
-
 
 image::image(const image& other) {
     this->M = other.M;
     this->N = other.N;
-    im_values = new int[M * N];
+    im_values = new bool[M * N];
     for (int i = 0; i < M * N; i++) {
         im_values[i] = other.im_values[i];
     }
@@ -30,16 +28,14 @@ bool image::can_multiply(const image& other) {// возможность объединения/ перемн
     return ((M == other.M) && (N == other.N));
 }
 
-
-void image:: random_Image() { // составление случайного изображения
-    if ((M == NULL) || (N == NULL)) throw "exeption";
-    srand(time(0));
-    for (int i = 0; i < rows(); i++) {
-        for (int j = 0; j < cols(); j++) {
-            int p_1 = rand() % 2;
-            change(i, j, p_1);
+image image:: random_Image(int rows, int cols) { // составление случайного изображения
+    image image(rows, cols);
+    for (int i = 0; i < image.rows(); i++) {
+        for (int j = 0; j < image.cols(); j++) {
+            image.change(i, j, rand() % 2);
         }
     }
+    return image;
 }
 
 image image:: operator+(const image& other) {//сложение изображений
@@ -106,15 +102,16 @@ image image:: operator+ (bool value) { //сложение матрицы рисунка с переменной
     return result;
 }
 
+
+
 bool image::draw_using_the_keyboard() { // выполнение рисунка вручную, с клавиатуры
     if (im_values == nullptr) {
-        throw "Memory is not available";
+        std::cout << "Memory is not available";
         return false;
     }
     for (int i = 0; i < M; ++i) {
         for (int j = 0; j < N; ++j) {
-            int k = i + 1, l = j + 1;
-            std::cout << "[" << k << "]" << "[" << l << "] = ";
+            std::cout << "[" << i << "]" << "[" << j << "] = ";
             std::cin >> im_values[i * N + j];
         }
     }
@@ -124,7 +121,7 @@ bool image::draw_using_the_keyboard() { // выполнение рисунка вручную, с клавиат
 void image::print_to_screen() { // вывод изображения на экран
     for (int i = 0; i < M; ++i) {
         for (int j = 0; j < N; ++j) {
-            if (im_values[i * M + j] != NULL) {
+            if (im_values[i * M + j]) {
                 std::cout << "*" << " ";
             }
             else {
@@ -135,12 +132,15 @@ void image::print_to_screen() { // вывод изображения на экран
     }
 }
 
+
 void image::resize(int rows, int cols) { //измение размера
+    //N = checkType(rows);
     N = rows;
     M = cols;
+    //M = checkType(cols);
     if (im_values)
         delete[] im_values;
-    im_values = new int[M * N];
+    im_values = new bool[M * N];
 }
 
 double image::fullness() { // коэффициент заполненности
@@ -153,18 +153,11 @@ double image::fullness() { // коэффициент заполненности
     return (double)fullness / (double)(M * N);
 }
 
-int image::get_size() const { 
-    if ((M == NULL)||( N == NULL)) throw "exeption";
-    return (M*N);
-}
-
 int image::rows() const { // строки
-    if (M == NULL) throw "exeption";
     return M;
 }
 
 int  image:: cols() const { // столбцы
-    if (N == NULL) throw "exeption";
     return N;
 }
 

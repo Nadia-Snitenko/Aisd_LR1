@@ -1,17 +1,16 @@
 #pragma once
 #include <iostream>
 
+
 class image {
 private:
     int M, N;
-    int* im_values;
-
+    bool* im_values;
 
 public:
 
     image() : im_values(nullptr), M(0), N(0) {}
-
-    image(int colls, int rolls) : im_values(new int[colls * rolls]), M(colls), N(rolls) {}
+    image(int colls, int rolls) : im_values(new bool[colls * rolls]), M(colls), N(rolls) {}
     image(const image& other);
     ~image();
 
@@ -26,13 +25,15 @@ public:
     image operator*(bool value); //домножение матрицы рисунка на переменную
     image operator+ (bool value); //сложение матрицы рисунка с переменной
 
-    void random_Image(); // составление случайного изображения
+    image random_Image(int rows, int cols); // составление случайного изображения
         
     bool draw_using_the_keyboard(); // выполнение рисунка вручную, с клавиатуры
     void print_to_screen(); // вывод изображения на экран
     void resize(int rows, int cols);// измение размера
     double fullness();// коэффициент заполненности
-    int get_size() const; // размер рисунка
     int rows() const; // строки
     int cols() const; // столбцы
+
 };
+
+
