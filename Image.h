@@ -5,6 +5,8 @@
 #include <complex>
 #include <iostream>
 #include <string>
+#include <vector>
+
 using namespace std;
 
 enum class CardinalDirection { NORTH, EAST, SOUTH, WEST };
@@ -13,11 +15,12 @@ template <class T, T True_, T False_>
 class image {
 
     int N, M; //size
-     T* im_values;
+    vector <T> im_values; //  vector <vector T>
 
 public:
 
     image() : im_values(nullptr), M(0), N(0) {}
+
     image(int colls, int rolls) : im_values(new T[colls * rolls]), M(colls), N(rolls) {}
     image(const image& other);
     ~image();
